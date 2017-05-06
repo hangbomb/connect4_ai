@@ -8,7 +8,7 @@ class Board(object):
 
         if len(board) == 0:
 
-            self.board = [[' ' for row in range(7)] for column in range(6)]
+            self.board = [[' ' for row in range(6)] for column in range(7)]
             
         else:
 
