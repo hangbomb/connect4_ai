@@ -1,0 +1,126 @@
+#from setting import *
+from searchAlgorism import *
+from rule import *
+#import random
+
+#from copy import deepcopy
+
+def yourTurn(board, text):
+
+    print('\n-------')
+
+    print(text)
+
+    move = None
+
+    while move not in board.canPut():
+
+        move = int(input('Select square to play at: '))-1
+
+    return move
+
+
+def ourTurnSearch(board, player):
+
+#   best_moves = [0,1,2,3,4,5,6]
+        
+    best = LOSE-1 #-513
+
+    choices = []
+
+    for move in board.canPut():
+
+        board.put(move, player)
+        score = minMax(board, getOpponent(player), LOSE+1, WIN+1, 2)
+        board.put(move, ' ', True)
+
+        print("Move: ",move+1," has a score of: ",score)
+
+        if score > best:
+
+            best = score
+
+            choices = [move]
+
+        elif score == best:
+
+            choices.append(move)
+
+    priortyList = [3,2,4,1,5,0,6]
+    
+    for i in range(len(priortyList)) :
+        for j in range(len(choices)) :
+            if choices[j] == priortyList[i]:
+                choice = choices[j]
+                print("\n[+] Selected move: ",choice+1)
+                return choice
+     
+   
+   # choice = random.choice(choices)
+
+
+        
+def playConnect4(): 
+
+    board = Board()
+    print(board)
+
+    player1 = "YOUR"
+    player2 = "OUR"
+
+    print('{} turn is X & {} turn is O'.format(player1,player2))
+
+    player = None
+
+    while player not in ['X','O']:
+
+        player = input('Who is first?(X or O) ').capitalize()
+ 
+
+    while not board.checkPlay():
+    #if not checkPlay(=boardIsFull or someone Won),    
+        if player == 'X':
+
+            move = yourTurn(board, '{}\'s turn'.format(player1))
+
+            board.put(move, player)
+
+        else:
+            mode = 0
+            
+            print("OUR's turn")
+            
+            while mode not in [1,2]:
+                mode = int(input('Select mode 1.Search 2.Rule '))
+            
+            if mode == 1 :
+                move = ourTurnSearch(board, player)
+
+            else :
+                print("It's rule mode\n")
+                move = rulePut(board, player)
+                
+            board.put(move, player)
+    
+
+        print(board)
+
+        player = getOpponent(player)
+
+
+    if board.whoWin() == "X":
+
+        print("{} won!".format(player1))
+
+    elif board.whoWin() == "O":
+        
+        print("{} won!".format(player2))
+
+    else:
+
+        print("It's a tie!")
+
+
+if __name__ == '__main__':
+    
+    playConnect4()
