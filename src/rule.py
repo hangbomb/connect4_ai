@@ -186,13 +186,13 @@ def rulePut(board,player):
         board.put(move,' ',True)    
             
     #8,9 아무것도 없으면 가운데 두어라 + 5번째 줄까지 가운데가 비어있으면, 가운데 두어라
-    if board.board[3][1] == ' ' :
+    if board.board[1][3] == ' ' :
         move = 3
         return move
     #10.
     priortyList = [3,2,4,1,5,0,6]
     for move in priortyList:
-        if board.board[move][1] != ' ' : continue
+        if board.board[1][move] != ' ' : continue
         return move
     #Default
     #아무것도 아님.....ㅎㅎ
