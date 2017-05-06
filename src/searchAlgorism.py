@@ -41,13 +41,13 @@ def winChance(board, man):
             # Horizonatal - evaluation
             try:
                 #checkWin에서 score 계산(현재 player('O' 기준))
-                t_score = checkWin(board[column][row], board.board[column+1][row], board.board[column+2][row], board.board[column+3][row], man)
+                t_score = checkWin(board[row][column], board.board[row][column+1], board.board[row][column+2], board.board[row][column+3], man)
 #                print('hor man')
                 if t_score >= WIN:
                     return WIN
                 score += t_score
                 #checkWin에서 score 계산(상대 player('X' 기준))
-                t_score = checkWin(board.board[column][row], board.board[column+1][row], board.board[column+2][row], board.board[column+3][row], o_man)
+                t_score = checkWin(board.board[row][column], board.board[row][column+1], board.board[row][column+2], board.board[row][column+3], o_man)
 #                print('hor oman')
                 if t_score >= WIN:
                     return LOSE
@@ -58,12 +58,12 @@ def winChance(board, man):
 
             # Vertical | evaluation
             try:
-                t_score = checkWin(board.board[column][row], board.board[column][row+1], board.board[column][row+2], board.board[column][row+3], man)
+                t_score = checkWin(board.board[row][column], board.board[row+1][column], board.board[row+2][column], board.board[row+3][column], man)
 #                print('ver man')
                 if t_score >= WIN:
                     return WIN
                 score += t_score
-                t_score = checkWin(board.board[column][row], board.board[column][row+1], board.board[column][row+2], board.board[column][row+3], o_man)
+                t_score = checkWin(board.board[row][column], board.board[row+1][column], board.board[row+2][column], board.board[row+3][column], o_man)
 #                print('ver oman')
                 if t_score >= WIN:
                     return LOSE
@@ -74,12 +74,12 @@ def winChance(board, man):
 
             # Diagonal \ evaluation
             try:
-                t_score = checkWin(board.board[column][row], board.board[column+1][row+1], board.board[column+2][row+2], board.board[column+3][row+3], man)
+                t_score = checkWin(board.board[row][column], board.board[row+1][column+1], board.board[row+2][column+2], board.board[row+3][column+3], man)
 #                print('\ man')
                 if t_score >= WIN:
                     return WIN
                 score += t_score
-                t_score = checkWin(board.board[column][row], board.board[column+1][row+1], board.board[column+2][row+2], board.board[column+3][row+3], o_man)
+                t_score = checkWin(board.board[row][column], board.board[row+1][column+1], board.board[row+2][column+2], board.board[row+3][column+3], o_man)
 #                print('\ oman')
                 if t_score >= WIN:
                     return LOSE
@@ -89,12 +89,12 @@ def winChance(board, man):
 
             # Diagonal / evaluation
             try:
-                t_score = checkWin(board.board[column][row], board.board[column-1][row+1], board.board[column-2][row+2], board.board[column-3][row+3], man)
+                t_score = checkWin(board.board[row][column], board.board[row+1][column-1], board.board[row+2][column-2], board.board[row+3][column-3], man)
 #                print('/ man')
                 if t_score >= WIN:
                     return WIN
                 score += t_score
-                t_score = checkWin(board.board[column][row], board.board[column-1][row+1], board.board[column-2][row+2], board.board[column-3][row+3], o_man)
+                t_score = checkWin(board.board[row][column], board.board[row+1][column-1], board.board[row+2][column-2], board.board[row+3][column-3], o_man)
 #                print('/ oman')
                 if t_score >= WIN:
                     return LOSE

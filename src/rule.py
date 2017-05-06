@@ -49,7 +49,7 @@ def getCount(board, player) :
                 try:
                     #print("hori")
                     #countConnect에서 count계산(현재 player('O' 기준))
-                    o_cnt = countConnect(board.board[column][row], board.board[column+1][row], board.board[column+2][row], board.board[column+3][row], player)
+                    o_cnt = countConnect(board.board[row][column], board.board[row][column+1], board.board[row][column+2], board.board[row][column+3], player)
                     if o_cnt > O_count:
                         O_count = o_cnt
                 except:
@@ -57,7 +57,7 @@ def getCount(board, player) :
 
                 try:
                     #countConnect에서 x_cnt 계산(상대 player('X' 기준))
-                    x_cnt = countConnect(board.board[column][row], board.board[column+1][row], board.board[column+2][row], board.board[column+3][row], o_player)
+                    x_cnt = countConnect(board.board[row][column], board.board[row][column+1], board.board[row][column+2], board.board[row][column+3], o_player)
                     if x_cnt > X_count:
                         X_count = x_cnt
                 except :
@@ -68,14 +68,14 @@ def getCount(board, player) :
             if (row +3 <= board.height):
                 try:
                     #print("verti")
-                    o_cnt = countConnect(board.board[column][row], board.board[column][row+1], board.board[column][row+2], board.board[column][row+3], player)
+                    o_cnt = countConnect(board.board[row][column], board.board[row+1][column], board.board[row+2][column], board.board[row+3][column], player)
                     if o_cnt > O_count:
                         O_count = o_cnt
                 except:
                     pass
 
                 try:
-                    x_cnt = countConnect(board.board[column][row], board.board[column][row+1], board.board[column][row+2], board.board[column][row+3], o_player)
+                    x_cnt = countConnect(board.board[row][column], board.board[row+1][column], board.board[row+2][column], board.board[row+3][column], o_player)
                     if x_cnt > X_count:
                         X_count = x_cnt
                 except:
@@ -85,14 +85,14 @@ def getCount(board, player) :
             #if(column+3 <= board.width && row+3 <= board.height) :
                 try:
                     #print("dia ~")
-                    o_cnt = countConnect(board.board[column][row], board.board[column+1][row+1], board.board[column+2][row+2], board.board[column+3][row+3], player)
+                    o_cnt = countConnect(board.board[row][column], board.board[row+1][column+1], board.board[row+2][column+2], board.board[row+3][column+3], player)
                     if o_cnt > O_count:
                         O_count = o_cnt
                 except:
                     pass
                     
                 try:
-                    x_cnt = countConnect(board.board[column][row], board.board[column+1][row+1], board.board[column+2][row+2], board.board[column+3][row+3], o_player)
+                    x_cnt = countConnect(board.board[row][column], board.board[row+1][column+1], board.board[row+2][column+2], board.board[row+3][column+3], o_player)
                     if x_cnt > X_count:
                         X_count = x_cnt
                 except:
@@ -101,13 +101,13 @@ def getCount(board, player) :
             # Diagonal / evaluation
             try:
                 #print("dia / ")
-                o_cnt = countConnect(board.board[column][row], board.board[column-1][row+1], board.board[column-2][row+2], board.board[column-3][row+3], player)
+                o_cnt = countConnect(board.board[row][column], board.board[row+1][column-1], board.board[row+2][column-2], board.board[row+3][column-3], player)
                 if o_cnt > O_count:
                     O_count = o_cnt
             except:
                 pass
             try:
-                x_cnt = countConnect(board.board[column][row], board.board[column-1][row+1], board.board[column-2][row+2], board[column-3][row+3], o_player)
+                x_cnt = countConnect(board.board[row][column], board.board[row+1][column-1], board.board[row+2][column-2], board.board[row+3][column-3], o_player)
                 if x_cnt > X_count:
                     X_count = x_cnt
             except:

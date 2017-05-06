@@ -1,6 +1,5 @@
 #-*- coding: utf-8 -*-
 WIN  =  512
-
 LOSE =  -WIN
 
 class Board(object):
@@ -9,7 +8,7 @@ class Board(object):
 
         if len(board) == 0:
 
-            self.board = [[' ' for row in range(6)] for column in range(7)]
+            self.board = [[' ' for row in range(7)] for column in range(6)]
             
         else:
 
@@ -31,7 +30,7 @@ class Board(object):
 
             for column in range(7):
 
-                string += self.board[column][row] + ' '
+                string += self.board[row][column] + ' '
                 #board에 값있으면 받아오기 + " "입력하기
             string += '\n' #한행 다 입력시 한줄 바꾸기
 
@@ -53,7 +52,7 @@ class Board(object):
 
         for column in range(self.width):
 
-            if self.board[column][0] == ' ':
+            if self.board[0][column] == ' ':
                 return False
         
         return True
@@ -78,16 +77,16 @@ class Board(object):
         for column in range(self.width):
             for row in range(self.height):
                 try:
-                    if(self.board[column][row] == man and self.board[column+1][row] == man and self.board[column+2][row] == man and self.board[column+3][row] == man):
+                    if(self.board[row][column] == man and self.board[row][column+1] == man and self.board[row][column+2] == man and self.board[row][column+3] == man):
                         state = WIN
                         return state
-                    if(self.board[column][row] == man and self.board[column][row+1] == man and self.board[column][row+2] == man and self.board[column][row+3] == man):
+                    if(self.board[row][column] == man and self.board[row+1][column] == man and self.board[row+2][column] == man and self.board[row+3][column] == man):
                         state = WIN
                         return state
-                    if(self.board[column][row] == man and self.board[column+1][row+1] == man and self.board[column+2][row+2] == man and self.board[column+3][row+3] == man):
+                    if(self.board[row][column] == man and self.board[row+1][column+1] == man and self.board[row+2][column+2] == man and self.board[row+3][column+3] == man):
                         state = WIN
                         return state
-                    if(self.board[column][row] == man and self.board[column-1][row+1] == man and self.board[column-2][row+2] == man and self.board[column-3][row+3] == man):
+                    if(self.board[row][column] == man and self.board[row+1][column-1] == man and self.board[row+2][column-2] == man and self.board[row+3][column-3] == man):
                         state = WIN
                         return state
                 except:
@@ -95,21 +94,21 @@ class Board(object):
                         
     def canPut(self):
         
-        return [column for column in range(self.width) if self.board[column][0] == " "]
+        return [column for column in range(self.width) if self.board[0][column] == " "]
 
 
     def put(self, column, player, delete=False):
 
         for row in range(self.height):
 
-            if self.board[column][row] != ' ':
+            if self.board[row][column] != ' ':
                 if not(delete):
       
                     row -= 1
                     
                 break
 
-        self.board[column][row] = player
+        self.board[row][column] = player
 
 
 def getOpponent(player):#놓여진 말 확인
@@ -120,5 +119,3 @@ def getOpponent(player):#놓여진 말 확인
     
     else:
         return 'O'
-    
-    
