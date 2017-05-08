@@ -1,49 +1,39 @@
 #from setting import *
-from searchAlgorism import *
 from rule import *
+from searchAlgorism import minMax, alphabetaPruning   
 #import random
 
 #from copy import deepcopy
 
 def yourTurn(board, text):
-
     print('\n-------')
-
     print(text)
-
     move = None
 
     while move not in board.canPut():
-
-        move = int(input('Select square to play at: '))-1
-
+        i = input('Select square to play at: ')
+        try :
+            move = int(i)
+        except ValueError:
+            print('not valid integer')
     return move
 
-
 def ourTurnSearch(board, player):
-
 #   best_moves = [0,1,2,3,4,5,6]
-        
     best = LOSE-1 #-513
-
     choices = []
 
     for move in board.canPut():
-
         board.put(move, player)
-        score = minMax(board, getOpponent(player), LOSE+1, WIN+1, 2)
+        score = alphabetaPruning(board, getOpponent(player), LOSE+1, WIN+1, 6)
         board.put(move, ' ', True)
 
         print("Move: ",move+1," has a score of: ",score)
 
         if score > best:
-
             best = score
-
             choices = [move]
-
         elif score == best:
-
             choices.append(move)
 
     priortyList = [3,2,4,1,5,0,6]
@@ -54,11 +44,8 @@ def ourTurnSearch(board, player):
                 choice = choices[j]
                 print("\n[+] Selected move: ",choice+1)
                 return choice
-     
-   
+
    # choice = random.choice(choices)
-
-
         
 def playConnect4(): 
 
@@ -80,47 +67,35 @@ def playConnect4():
     while not board.checkPlay():
     #if not checkPlay(=boardIsFull or someone Won),    
         if player == 'X':
-
             move = yourTurn(board, '{}\'s turn'.format(player1))
-
             board.put(move, player)
-
         else:
             mode = 0
-            
             print("OUR's turn")
             
             while mode not in [1,2]:
-                mode = int(input('Select mode 1.Search 2.Rule '))
+                i = input('Select mode 1.alphabeta 2.Rule ')
+                try :
+                    mode = int(i)
+                except ValueError:
+                    print('not valid integer')
+                
             
             if mode == 1 :
                 move = ourTurnSearch(board, player)
-
-            else :
+            elif mode ==2 :
                 print("It's rule mode\n")
                 move = rulePut(board, player)
-                
             board.put(move, player)
-    
-
         print(board)
-
         player = getOpponent(player)
 
-
     if board.whoWin() == "X":
-
         print("{} won!".format(player1))
-
     elif board.whoWin() == "O":
-        
         print("{} won!".format(player2))
-
     else:
-
         print("It's a tie!")
 
-
 if __name__ == '__main__':
-    
     playConnect4()

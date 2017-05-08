@@ -34,20 +34,27 @@ def countConnect(one, two, three, four, man):
             count += 1
         if four == man:
             #print('four')
-            count += 1 
+            count += 1
     #print("count = ", count , "\n")
     return count
+
+"""def getRow(board, column):
+    for row in range(board.height):
+        if board.board[column][row] != ' ':
+            row -= 1
+            return row
+        elif row == 5 : 
+            return row"""
 
 def getCount(board, player) :
     o_player = getOpponent(player)
     O_count = 0
     X_count = 0
-    for column in range(board.width):
-        for row in range(board.height):
+    for row in range(board.height):
+        for column in range(board.width):
             # Horizonatal - evaluation
-            if (column + 3 <= board.width) :
+            if (column < 4) :
                 try:
-                    #print("hori")
                     #countConnect에서 count계산(현재 player('O' 기준))
                     o_cnt = countConnect(board.board[row][column], board.board[row][column+1], board.board[row][column+2], board.board[row][column+3], player)
                     if o_cnt > O_count:
@@ -65,26 +72,24 @@ def getCount(board, player) :
             
 
             # Vertical | evaluation
-            if (row +3 <= board.height):
+            if (row < 3):
                 try:
-                    #print("verti")
                     o_cnt = countConnect(board.board[row][column], board.board[row+1][column], board.board[row+2][column], board.board[row+3][column], player)
-                    if o_cnt > O_count:
+                    if o_cnt == 4:
                         O_count = o_cnt
                 except:
                     pass
 
                 try:
                     x_cnt = countConnect(board.board[row][column], board.board[row+1][column], board.board[row+2][column], board.board[row+3][column], o_player)
-                    if x_cnt > X_count:
+                    if x_cnt == 4:
                         X_count = x_cnt
                 except:
                     pass
 
             # Diagonal \ evaluation
-            #if(column+3 <= board.width && row+3 <= board.height) :
+            if(column < 4 and row < 3) :
                 try:
-                    #print("dia ~")
                     o_cnt = countConnect(board.board[row][column], board.board[row+1][column+1], board.board[row+2][column+2], board.board[row+3][column+3], player)
                     if o_cnt > O_count:
                         O_count = o_cnt
@@ -99,19 +104,20 @@ def getCount(board, player) :
                     pass
 
             # Diagonal / evaluation
-            try:
-                #print("dia / ")
-                o_cnt = countConnect(board.board[row][column], board.board[row+1][column-1], board.board[row+2][column-2], board.board[row+3][column-3], player)
-                if o_cnt > O_count:
-                    O_count = o_cnt
-            except:
-                pass
-            try:
-                x_cnt = countConnect(board.board[row][column], board.board[row+1][column-1], board.board[row+2][column-2], board.board[row+3][column-3], o_player)
-                if x_cnt > X_count:
-                    X_count = x_cnt
-            except:
-                pass
+            if(column > 2 and row < 3 ) :
+                try:
+                    o_cnt = countConnect(board.board[row][column], board.board[row+1][column-1], board.board[row+2][column-2], board.board[row+3][column-3], player)
+                    if o_cnt > O_count:
+                        O_count = o_cnt
+                except:
+                    pass
+
+                try:
+                    x_cnt = countConnect(board.board[row][column], board.board[row+1][column-1], board.board[row+2][column-2], board.board[row+3][column-3], o_player)
+                    if x_cnt > X_count:
+                        X_count = x_cnt
+                except:
+                    pass
 
     #print("O_count= ", O_count, "X_count = ", X_count, "\n")
     return O_count, X_count
@@ -137,7 +143,8 @@ def rulePut(board,player):
     for move in board.canPut():
         board.put(move, o_player)
         cnt_O, cnt_X = getCount(board,player)
-        
+        print("try case 22, move = ", move)
+        print(board)
         #넣었을때, 상대방이 무조건 이기는 자리면, 그곳에 두어 막는다.
         if cnt_X == 4:
             print('X가 4개가 되기 때문에, Computer will block at square: {}'.format(move+1))
@@ -150,40 +157,44 @@ def rulePut(board,player):
     for move in board.canPut():
         board.put(move, o_player)
         cnt_O, cnt_X = getCount(board,player)
-        if cnt_X == 3 :
-            print('X가 3개가 될 가능성이 있기 때문에, Computer will block at square: {}'.format(move+1))
-            move2 = [move+1,move-1,move+2,move-1,move+3,move-3]
-            for move2 in board.canPut():
-                board.put(move2, o_player)
-                cnt_O, cnt_X = getCount(board,player)
-                if cnt_X == 4 :
-                    print('어머나 세상에! X가 4개로 연결될 가능성이 크기 때문에, Computer will block at square: {}'.format(move2))
-                    print(board)
-                    board.put(move2, ' ', True)
-                    board.put(move, ' ', True)
-                    return move2
-                board.put(move2, ' ', True)           
+        if cnt_X == 3:
+            print("emergency")
+            board.put(move, ' ',True)
+            cnt_O, cnt_X = getCount(board,player)
+            if cnt_X == 2 :
+                print("x has possiblity of connect3")
+                return move
+            #board.put(move, o_player)
+            #가운데에서 먼 순서대로(낮은순서대로....)
+            defenseList = [6,0,5,1,4,2,3]
+            for move in defenseList:
+                if board.board[5][move] != ' ' : continue
+                return move
+            for move in defenseList:
+                if board.board[4][move] != ' ' : continue
+                return move
+            for move in defenseList:
+                if board.board[3][move] != ' ' : continue
+                return move
+            for move in defenseList:
+                if board.board[2][move] != ' ' : continue
+                return move
+            for move in defenseList:
+                if board.board[1][move] != ' ' : continue
+                return move
+            board.put(move, o_player)
         board.put(move, ' ', True)
     #5,6,7 내가 3개가 연결될 수 있으면(4개가 될 가능성이 있는 3개) 막아라.
     for move in board.canPut():
         board.put(move, player)
         cnt_O, cnt_X = getCount(board,player)
-        if cnt_O == 3 :
-            print('O가 3개가 될 가능성이 있기 때문에, Computer will play at square: {}'.format(move+1))
-            move2 = [move+1,move-1,move+2,move-1,move+3,move-3]
-            for move2 in board.canPut():
-                board.put(move2, player)
-                cnt_O, cnt_X = getCount(board,player)
-                if cnt_O == 4 :
-                    print('O가 4개로 연결될 가능성이 크기 때문에, Computer will play at square: {}'.format(move2))
-                    #print(board)
-                    board.put(move2, ' ', True)
-                    board.put(move, ' ', True)
-                    return move2
-                board.put(move2, ' ', True)
-            board.put(move,' ',True)    
-            return move
-        board.put(move,' ',True)    
+        if cnt_O == 3:
+            board.put(move,' ',True)
+            cnt_O, cnt_X = getCount(board,player)
+            if cnt_O == 2 :    
+                return move
+            board.put(move, player)
+        board.put(move,' ',True)
             
     #8,9 아무것도 없으면 가운데 두어라 + 5번째 줄까지 가운데가 비어있으면, 가운데 두어라
     if board.board[1][3] == ' ' :
@@ -197,4 +208,5 @@ def rulePut(board,player):
     #Default
     #아무것도 아님.....ㅎㅎ
     for move in board.canPut():
+        print('default')
         return move
