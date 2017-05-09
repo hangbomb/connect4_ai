@@ -1,7 +1,4 @@
-"""
-A collection of classes and functions for playing certain types of
-games. Specifically, an implementation of the MCTS algorithm.
-"""
+"""A collection of classes and functions for playing certain types of games. Specifically, an implementation of the MCTS algorithm."""
 import random, queue
 from math import sqrt, log
 from random import sample
@@ -200,7 +197,7 @@ class Node(object):
         A generator function. Does a pre-order traversal over the nodes
         in the tree without using recursion.
         """
-        active = Queue.Queue()
+        active = queue.Queue()
         active.put(self)
         while active.qsize() > 0:
             next = active.get()
@@ -391,7 +388,7 @@ def full_tree(game, state, player):
     Creates a full game tree in which player moves first. The traversal is done
     in breadth-first order. The return value is the root node.
     """
-    active = Queue.Queue()
+    active = queue.Queue()
     root = Node(None, None, state, player)
     active.put(root)
 
@@ -435,16 +432,14 @@ def minimax(game, state, player):
             current.value = max(values)
         else:
             current.value = min(values)
-
     return root
-
 
 def mcts(game, state, player, n):
     """
     Implementation of the UCT variant of the Monte Carlo Tree Search algorithm.
     """
     root = Node(None, None, state, player)
-    unexplored = Queue.Queue()
+    unexplored = queue.Queue()
     unexplored.put(root)
 
     for _ in xrange(n):

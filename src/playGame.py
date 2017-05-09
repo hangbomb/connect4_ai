@@ -17,7 +17,6 @@ def yourTurn(board, text):
             print('not valid integer')
     return move
 
-
 def ourTurnSearch(board, player):
 #   best_moves = [0,1,2,3,4,5,6]
     best = LOSE-1 #-513
@@ -57,7 +56,7 @@ def playConnect4():
     #if not checkPlay(=boardIsFull or someone Won),
         if player == 'X':
             while modeX not in [1,2]:
-                i = input('Select mode 1.alphabeta 2.Rule ')
+                i = input('Select mode 1.alphabeta 2.Rule 3.')
                 try :
                     modeX = int(i)
                 except ValueError:
@@ -67,6 +66,8 @@ def playConnect4():
             elif modeX ==2 :
                 print("It's rule mode\n")
                 move = rulePut(board, player)
+            elif modeX == 3:
+                move = None
             board.put(move, player)
         else:
             print("OUR's turn")

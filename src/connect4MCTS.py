@@ -1,7 +1,9 @@
 import sys
 import mcts
 
-def play(human=True, n=1000):
+ITER = 1000000
+
+def play(human=True, n=ITER):
     # Testing ConnectFour - mcts_uct()
     height = 6
     width = 7
@@ -57,14 +59,14 @@ def play(human=True, n=1000):
         'Tie game.'
 
 
-n = 1000
+n = ITER
 if len(sys.argv) > 1:
     try:
         n = int(sys.argv[1])
     except ValueError:
         pass
 
-n = 1000
+n = ITER
 if '-n' in sys.argv:
     try:
         n = int(sys.argv[sys.argv.index('-n') + 1])
